@@ -261,3 +261,10 @@ def clipPitch(track, clip, coarse = None, fine = None):
     if fine != None:
         clip.pitch_fine = fine
     return (clip.pitch_coarse, clip.pitch_fine)
+
+def record(record):
+    """Record arrangement"""
+    if record == 1:
+        getSong().record_mode = True
+    elif record == 0:
+        getSong().record_mode = False

@@ -96,6 +96,8 @@ class LiveOSCCallbacks:
 
         self.callbackManager.add("/live/master/volume", self.volumeCB)
         self.callbackManager.add("/live/master/pan", self.panCB)
+        self.callbackManager.add("/live/master/meter/left", self.meterL_CB)
+        self.callbackManager.add("/live/master/meter/right", self.meterR_CB)
         
         self.callbackManager.add("/live/devicelist", self.devicelistCB)
         self.callbackManager.add("/live/return/devicelist", self.devicelistCB)
@@ -622,7 +624,15 @@ class LiveOSCCallbacks:
             else:
                 status = LiveUtils.getTrack(track).solo
                 self.oscEndpoint.send("/live/solo", (track, int(status)))
-            
+         
+    def meterL_CB(self, msg, source):
+        """Called when a /live/master/meter/left message is received."""
+        self.oscEndpoint.send("/live/master/meter/left", float(LiveUtils.getSong().master_track.output_meter_left))
+
+    def meterR_CB(self, msg, source):
+        """Called when a /live/master/meter/right message is received."""
+        self.oscEndpoint.send("/live/master/meter/right", float(LiveUtils.getSong().master_track.output_meter_right))
+
     def volumeCB(self, msg, source):
         """Called when a /live/volume message is received.
 
